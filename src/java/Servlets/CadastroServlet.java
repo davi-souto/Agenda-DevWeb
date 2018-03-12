@@ -85,11 +85,39 @@ public class CadastroServlet extends HttpServlet {
 "            Estado: <input type=\"text\" name=\"estado\"/><br>\n" +
 "            <input type=\"submit\" value=\"Enviar\">\n" +
 "        </form>\n" +
+"        <a href=\"index.html\">Voltar</a>\n" +
 "    </body>\n" +
 "</html>";
                 break;
             case "/remover":
                 response.sendRedirect("index.html");
+                break;
+            case "/editar":
+                int ind = Integer.parseInt(request.getParameter("contato"));
+                this.agenda.contatos.remove(ind);
+                String editarHTML = "<html>\n" +
+"    <head>\n" +
+"        <title>TODO supply a title</title>\n" +
+"        <meta charset=\"UTF-8\">\n" +
+"        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+"    </head>\n" +
+"    <body>\n" +
+"        <h1>Cadastro</h1>\n" +
+"        <hr>\n" +
+"        <form action=\"CadastroServlet\">\n" +
+"            Nome:<input type=\"text\" name=\"nome\"/><br>\n" +
+"            Email: <input type=\"text\" name=\"email\"/><br>\n" +
+"            Telefone: <input type=\"text\" name=\"telefone\"/><br>\n" +
+"            Rua: <input type=\"text\" name=\"rua\"/><br>\n" +
+"            Bairro: <input type=\"text\" name=\"bairro\"/><br>\n" +
+"            Cidade: <input type=\"text\" name=\"cidade\"/><br>\n" +
+"            Estado: <input type=\"text\" name=\"estado\"/><br>\n" +
+"            <input type=\"submit\" value=\"Enviar\">\n" +
+"        </form>\n" +
+"        <a href=\"index.html\">Voltar</a>\n" +
+"    </body>\n" +
+"</html>";
+                response.sendRedirect("/Agenda DevWeb/");
                 break;
         }
         
@@ -100,6 +128,15 @@ public class CadastroServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String rota = request.getServletPath();
+        switch(rota){
+            case "/adicionar":
+                this.adicionarContato(request, response);
+                break;
+            case "/editar":
+                this.editarContato(request, response);
+                break;
+        }
     }
 
     public void adicionarContato(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
@@ -117,7 +154,10 @@ public class CadastroServlet extends HttpServlet {
     }
     
     public void removerContato(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
+            int ind = Integer.parseInt(request.getParameter("contato"));
+            this.agenda.contatos.remove(ind);
             
+            response.sendRedirect("/Agenda Agenda DevWeb/");
     }
     /**
      * Returns a short description of the servlet.
@@ -129,4 +169,28 @@ public class CadastroServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    public void editarContato(HttpServletRequest request, HttpServletResponse response ) throws IOException {
+         
+         int indice = Integer.parseInt(request.getParameter("indice"));
+         
+         String nome = request.getParameter("nome");
+         String email = request.getParameter("email");
+         String telefone = request.getParameter("telefone");
+         String rua = request.getParameter("rua");
+         String bairro = request.getParameter("bairro");
+         String cidade = request.getParameter("cidade");
+         String estado = request.getParameter("estado");
+         
+         Contato contato = (Contato) this.agenda.contatos.get(indice);
+         
+         contato.setNome(nome);
+         contato.setEmail(email);
+         contato.setTelefone(telefone);
+         contato.setRua(rua);
+         contato.setBairro(bairro);
+         contato.setCidade(cidade);
+         contato.setEstado(estado);
+         
+         response.sendRedirect("/Agenda Agenda DevWeb/");
+     }
 }

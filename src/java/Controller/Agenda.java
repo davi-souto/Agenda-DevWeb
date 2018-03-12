@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class Agenda {
     
-    private ArrayList<Contato> contatos = new ArrayList<Contato>();
+    public ArrayList<Contato> contatos = new ArrayList<Contato>();
     
     public Contato AddContato(String nome, String email, String telefone, String rua, String bairro, String cidade, String estado){
         Contato c = new Contato(nome, email, telefone, rua, bairro, cidade, estado);
